@@ -1,15 +1,19 @@
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material"
-import React, { useEffect, useRef, useState } from "react";
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material"
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { userSlice } from "../../store/reducers/UsersSlice";
 import CustomButton from "../UI/CustomButton";
+import PostNotification from "./PostNotification";
 
 
 
 
-const PostForm = () => {
+const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) => {
 
     const dispatch = useAppDispatch()
+    const [open, setOpen] = useState(false);
+
+
 
     const handleSubmit = async () => {
         var formData = new FormData();
@@ -18,8 +22,9 @@ const PostForm = () => {
         formData.append('email', email);
         formData.append('phone', phone);
         formData.append('photo', img!);
-        const token = await (await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/token')).json();
 
+
+        const token = await (await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/token')).json();
         try {
             const response = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
                 method: 'POST',
@@ -30,19 +35,22 @@ const PostForm = () => {
             })
 
             const data = await response.json()
-            console.log(data);
 
             if (data.success) {
-                await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users')
+                await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6')
                     .then(response => response.json())
-                    .then(data => (dispatch(userSlice.actions.usersRewrite(data))))
+                    .then(data => {
+                        userRef.current?.scrollIntoView()
+                        setOpen(true)
+                        return (dispatch(userSlice.actions.usersRewrite(data)))
+                    })
                     .catch(err => console.log(err))
-
                 setEmail('')
                 setName('')
                 setPhone('+380')
                 setImg('Upload your photo')
                 setValue(options[0].name)
+
             }
         } catch (err) {
             console.log(err);
@@ -207,6 +215,14 @@ const PostForm = () => {
                 </div>
             </div>
             <CustomButton onClick={handleSubmit} marginTop="50px" disabled={!nameValid || !phoneValid || !emailValid || (typeof img === 'string')}>Sign in</CustomButton>
+            <Snackbar
+                open={open}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                autoHideDuration={6000}
+                onClose={() => setOpen(false)}
+                message="User have been saved"
+                action={<PostNotification setOpen={setOpen} />}
+            />
         </div >
     )
 }

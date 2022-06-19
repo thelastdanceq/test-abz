@@ -25,9 +25,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className="App app">
         <Nav signUpRef={signUpRef} userRef={userRef} />
-        <SignIn postref={signUpRef}/>
+        <SignIn postref={signUpRef} />
         <UserBlock userref={userRef} />
-        <PostBlock postref={signUpRef} />
+        <PostBlock signUpRef={signUpRef} userRef={userRef} />
       </div>
     </ThemeProvider >
 
