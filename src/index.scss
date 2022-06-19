@@ -4,6 +4,27 @@
 @import './styles/userblock.scss';
 @import './styles/postblock.scss';
 
+/* nunito-regular - latin */
+@font-face {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/nunito-v24-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local('./src'),
+        url('fonts/nunito-v24-latin-regular.eot#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('/fonts/nunito-v24-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('/fonts/nunito-v24-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('/fonts/nunito-v24-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('/fonts/nunito-v24-latin-regular.svg#Nunito') format('svg');
+    /* Legacy iOS */
+    font-display: swap;
+}
+
 .app {
     display: flex;
     flex-direction: column;
@@ -15,6 +36,54 @@
     margin: 0 auto;
 }
 
+.text-container {
+    width: 328px;
+}
+
+
 body {
     background-color: $background-color;
+}
+
+@media only screen and (min-width: 768px) {
+    .container {
+        width: 704px;
+    }
+
+    .text-container {
+        width: 380px;
+    }
+
+    .userblock {
+        &-list {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media only screen and (min-width: 1024px) {
+        .container {
+            width: 904px;
+        }
+
+        .text-container {
+            width: 380px;
+        }
+
+        .userblock {
+            &-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    }
+
+
+    @media only screen and (min-width: 2560px) {
+        .container {
+            width: 1169px;
+        }
+
+        .text-container {
+            width: 380px;
+        }
+    }
 }

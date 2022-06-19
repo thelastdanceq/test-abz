@@ -5,14 +5,14 @@ import CustomButton from '../UI/CustomButton'
 import UserList from './UserList'
 
 
-const UserBlock = () => {
+const UserBlock = ({ userref }: { userref: React.RefObject<HTMLInputElement> }) => {
     const { showButton, isLoading, next_url } = useAppSelector(state => state.userReducer);
     const dispatch = useAppDispatch()
     const handleClick = () => {
         dispatch(fetchUsers(next_url))
     }
     return (
-        <div className='userblock'>
+        <div className='userblock' ref={userref}>
             <div className="container">
                 <h1>
                     Working with GET request

@@ -7,8 +7,12 @@ export const fetchUsers = (url: string) => async (dispatch: AppDispatch) => {
         const response = await (await fetch(url)).json();
         dispatch(userSlice.actions.usersFetchingSuccess(response));
 
-    } catch (error) {
-        dispatch(userSlice.actions.usersFetchingFailed("error"));
+    } catch (e) {
+        if (typeof e === "string") {
+            e.toUpperCase() // works, `e` narrowed to string
+        } else if (e instanceof Error) {
+            dispatch(userSlice.actions.usersFetchingFailed(e.message));
 
+        }
     }
 }

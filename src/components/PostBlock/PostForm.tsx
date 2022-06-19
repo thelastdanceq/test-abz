@@ -1,5 +1,5 @@
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { userSlice } from "../../store/reducers/UsersSlice";
 import CustomButton from "../UI/CustomButton";
@@ -19,35 +19,43 @@ const PostForm = () => {
         formData.append('phone', phone);
         formData.append('photo', img!);
         const token = await (await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/token')).json();
-        console.log(token);
 
-        const data = await (await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Token': token.token,
+        try {
+            const response = await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Token': token.token,
+                }
+            })
+
+            const data = await response.json()
+            console.log(data);
+
+            if (data.success) {
+                await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users')
+                    .then(response => response.json())
+                    .then(data => (dispatch(userSlice.actions.usersRewrite(data))))
+                    .catch(err => console.log(err))
+
+                setEmail('')
+                setName('')
+                setPhone('+380')
+                setImg('Upload your photo')
+                setValue(options[0].name)
             }
-        })).json()
-        if (data.success) {
-            fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users')
-                .then(response => response.json())
-                .then(data => (dispatch(userSlice.actions.usersRewrite(data))))
-            setEmail('')
-            setName('')
-            setPhone('+380')
-            setImg('Upload your photo')
-            setValue(options[0].name)
+        } catch (err) {
+            console.log(err);
         }
+
     }
 
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e && e.target && e.target.files && e.target.files[0]) {
-            const fileTypeValid =
-                e.target.files[0].type.split('/')[1] === "jpeg"
-                ||
-                e.target.files[0].type.split('/')[1] === "jpg";
+            const last = e.target.files[0].name.split('.')
 
+            const fileTypeValid = last[last.length - 1] === "jpeg" || last[last.length - 1] === "jpg"
 
             const fileSizeValid = !(e.target.files[0].size > 5_000_000);
 
@@ -79,7 +87,7 @@ const PostForm = () => {
         name.length >= 2 && name.length <= 60 ? setNameValid(true) : setNameValid(false)
     }, [name])
     useEffect(() => {
-        const pattern = /^[\+]{0,1}380([0-9]{9})$/
+        const pattern = /\+380([0-9]{9})$/
         pattern.test(phone) ? setPhoneValid(true) : setPhoneValid(false)
     }, [phone])
     useEffect(() => {
@@ -110,8 +118,7 @@ const PostForm = () => {
             <TextField
                 required
                 fullWidth
-                placeholder="Your name"
-                color="secondary"
+                label={"Name"}
                 helperText={nameValid ? "It`s ok" : "Length of name should be > 2 and < 50!"}
                 error={!nameValid || false}
                 value={name}
@@ -121,10 +128,10 @@ const PostForm = () => {
 
             <TextField
                 fullWidth
-                error={!emailValid || false}
-                placeholder="Email"
-                helperText={emailValid ? "It`s ok" : "Email is not valid"}
                 required
+                error={!emailValid || false}
+                label={"Email"}
+                helperText={emailValid ? "It`s ok" : "Email is not valid"}
                 value={email}
                 sx={{ marginTop: "50px" }}
                 onInput={e => handleChange(setEmail, e)}
@@ -132,15 +139,14 @@ const PostForm = () => {
             />
 
             <TextField
+                required
+                fullWidth
                 error={!phoneValid || false}
                 helperText={phoneValid ? "It`s ok" : "+38 (XXX) XXX - XX - XX"}
-                fullWidth
-                placeholder="Phone"
+                label={"Phone"}
                 name="phone"
-                required
-                value={phone}
                 sx={{ marginTop: "50px" }}
-
+                value={phone}
                 onInput={e => handleChange(setPhone, e)}
             />
 
@@ -154,7 +160,6 @@ const PostForm = () => {
                         fontWeight: 400,
                         lineHeight: "26px",
                         color: "black",
-
                     }}
                     color="secondary"
                 >Select your position</FormLabel>
@@ -166,7 +171,12 @@ const PostForm = () => {
 
                     {options.map(option => <FormControlLabel sx={{
                         display: "flex",
-                    }} className="postblock-form-radio-options" key={option.id} value={option.name} control={<Radio color="secondary" />} label={option.name} />)}
+                    }} className="postblock-form-radio-options" key={option.id} value={option.name} control={<Radio sx={{
+                        color: "#D0CFCF",
+                        '&.Mui-checked': {
+                            color: "secondary.main",
+                        },
+                    }} />} label={option.name} />)}
 
                 </RadioGroup>
             </FormControl >
@@ -188,8 +198,8 @@ const PostForm = () => {
                         required
                         type="file"
                         onChange={handleFile}
-                        accept="image/jpeg, image/jpg "
-                        hidden
+                        accept="image/jpeg, image/jpg"
+
                     />
                 </Button>
                 <div className="postblock-form-btn-label">

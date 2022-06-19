@@ -7,13 +7,13 @@
     }
 
     &-list {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
         gap: 20px;
-        flex-direction: column;
 
         &-card {
-            width: 330px;
-            height: 254px;
+            // width: 330px;
+            // height: 254px;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 10px;

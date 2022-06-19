@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material';
+import { useRef } from 'react';
 import Nav from './components/Nav';
 import PostBlock from './components/PostBlock/PostBlock';
 import SignIn from './components/SignInBlock';
@@ -17,13 +18,16 @@ const theme = createTheme({
 
 function App() {
 
+  const userRef = useRef(null);
+  const signUpRef = useRef(null);
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App app">
-        <Nav />
-        <SignIn />
-        <UserBlock />
-        <PostBlock />
+        <Nav signUpRef={signUpRef} userRef={userRef} />
+        <SignIn postref={signUpRef}/>
+        <UserBlock userref={userRef} />
+        <PostBlock postref={signUpRef} />
       </div>
     </ThemeProvider >
 
