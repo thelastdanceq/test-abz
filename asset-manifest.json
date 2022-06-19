@@ -1,16 +1,21 @@
 {
   "files": {
-    "main.css": "/test-abz/static/css/main.23246432.css",
-    "main.js": "/test-abz/static/js/main.bc44b50e.js",
+    "main.css": "/test-abz/static/css/main.220c3b52.css",
+    "main.js": "/test-abz/static/js/main.f6a55c3d.js",
     "static/media/background-image.jpeg": "/test-abz/static/media/background-image.be7665f876bbd9138501.jpeg",
+    "static/media/nunito-v24-latin-regular.svg": "/test-abz/static/media/nunito-v24-latin-regular.412cc614d7ab78de6b0a.svg",
+    "static/media/nunito-v24-latin-regular.ttf": "/test-abz/static/media/nunito-v24-latin-regular.7bca2ea5ad46fc0a2d31.ttf",
     "static/media/Logo.svg": "/test-abz/static/media/Logo.8bb55362d01d55393ccc5476d96f0c14.svg",
+    "static/media/nunito-v24-latin-regular.woff": "/test-abz/static/media/nunito-v24-latin-regular.ca52c044715c95fdd0d8.woff",
+    "static/media/nunito-v24-latin-regular.eot": "/test-abz/static/media/nunito-v24-latin-regular.73d02691cf6fa38e40b2.eot",
+    "static/media/nunito-v24-latin-regular.woff2": "/test-abz/static/media/nunito-v24-latin-regular.b8644b6e04ecda1cf98b.woff2",
     "static/media/photo-cover.svg": "/test-abz/static/media/photo-cover.fb98cf13a87225efe558669bdc541ac7.svg",
     "index.html": "/test-abz/index.html",
-    "main.23246432.css.map": "/test-abz/static/css/main.23246432.css.map",
-    "main.bc44b50e.js.map": "/test-abz/static/js/main.bc44b50e.js.map"
+    "main.220c3b52.css.map": "/test-abz/static/css/main.220c3b52.css.map",
+    "main.f6a55c3d.js.map": "/test-abz/static/js/main.f6a55c3d.js.map"
   },
   "entrypoints": [
-    "static/css/main.23246432.css",
-    "static/js/main.bc44b50e.js"
+    "static/css/main.220c3b52.css",
+    "static/js/main.f6a55c3d.js"
   ]
 }
