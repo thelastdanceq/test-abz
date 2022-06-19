@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/test-abz/static/css/main.220c3b52.css",
+    "main.css": "/test-abz/static/css/main.80da93fb.css",
     "main.js": "/test-abz/static/js/main.f6a55c3d.js",
     "static/media/background-image.jpeg": "/test-abz/static/media/background-image.be7665f876bbd9138501.jpeg",
     "static/media/nunito-v24-latin-regular.svg": "/test-abz/static/media/nunito-v24-latin-regular.412cc614d7ab78de6b0a.svg",
@@ -11,11 +11,11 @@
     "static/media/nunito-v24-latin-regular.woff2": "/test-abz/static/media/nunito-v24-latin-regular.b8644b6e04ecda1cf98b.woff2",
     "static/media/photo-cover.svg": "/test-abz/static/media/photo-cover.fb98cf13a87225efe558669bdc541ac7.svg",
     "index.html": "/test-abz/index.html",
-    "main.220c3b52.css.map": "/test-abz/static/css/main.220c3b52.css.map",
+    "main.80da93fb.css.map": "/test-abz/static/css/main.80da93fb.css.map",
     "main.f6a55c3d.js.map": "/test-abz/static/js/main.f6a55c3d.js.map"
   },
   "entrypoints": [
-    "static/css/main.220c3b52.css",
+    "static/css/main.80da93fb.css",
     "static/js/main.f6a55c3d.js"
   ]
 }
