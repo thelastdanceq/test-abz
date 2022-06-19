@@ -1,0 +1,51 @@
+.postblock {
+    margin-top: 140px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: start;
+
+        &-radio {
+            align-self: start;
+
+            & label {
+                &.Mui-focused {
+                    color: black;
+                }
+            }
+
+            &-options {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        &-btn {
+            width: 100%;
+            height: 54px;
+            margin-top: 50px;
+            display: flex;
+
+            &-label {
+                border: 1px solid gray;
+                border-left: none;
+                border-radius: 0px 4px 4px 0px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

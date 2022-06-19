@@ -1,0 +1,20 @@
+@import './styles/vars.scss';
+@import './styles/reset.scss';
+@import './styles/nav.scss';
+@import './styles/userblock.scss';
+@import './styles/postblock.scss';
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 328px;
+    margin: 0 auto;
+}
+
+body {
+    background-color: $background-color;
+}

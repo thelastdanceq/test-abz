@@ -1,0 +1,23 @@
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 0;
+
+    &-logo {
+        &-image {
+            width: 104px;
+            height: 26px;
+
+            & img {
+                min-width: 100%;
+                min-height: 100%;
+                display: block;
+            }
+        }
+    }
+
+    &-buttons {
+        display: flex;
+    }
+}
