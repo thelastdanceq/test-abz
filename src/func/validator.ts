@@ -1,6 +1,8 @@
 export const validatePhone = (num: string) => {
-    const pattern = /^[\+]{0,1}380([0-9]{9})$/
-    return pattern.test(String(num))
+    const pattern = /^\+380([0-9]{9})$/
+    console.log(pattern.test(num));
+
+    return pattern.test(num)
 }
 
 export const validateName = (name: string) => {

@@ -66,25 +66,31 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
             const last = e.target.files[0].name.split('.')
             let img = new Image()
             img.src = window.URL.createObjectURL(e.target.files[0])
-            const fileSquareValid = (img.onload = () => {
+            const fileSquareValid = img.onload = () => {
                 return img.naturalHeight >= 70 && img.naturalWidth >= 70
-            })()
-            console.log(fileSquareValid);
+            }
 
 
             const fileTypeValid = last[last.length - 1] === "jpeg" || last[last.length - 1] === "jpg"
 
             const fileSizeValid = !(e.target.files[0].size > 5_000_000);
-            if (!fileSquareValid) alert('Size of picture is too small')
-            if (!fileTypeValid) alert('Type is not valid ')
-            if (!fileSizeValid) alert('Size of file is too big ')
-
-
-            if (fileTypeValid && fileSizeValid && fileSquareValid) {
-                setImg(e!.target!.files ? e.target.files[0] : "Upload your photo")
-            } else {
-                alert("Your file is too big or type is not 'jpeg/jpg', choose another")
+            if (!fileSquareValid) {
+                alert('Size of picture is too small')
+                setImgValid(false)
+                return
             }
+            if (!fileTypeValid) {
+                alert('Type is not valid ')
+                setImgValid(false)
+                return
+            }
+            if (!fileSizeValid) {
+                alert('Size of file is too big ')
+                setImgValid(false)
+
+                return
+            }
+            setImg(e!.target!.files ? e.target.files[0] : "Upload your photo")
         }
     }
 
@@ -150,7 +156,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 sx={{ marginTop: "50px" }}
                 onInput={e => {
                     handleChange(setEmail, e)
-                    setNameValid(validateEmail((e.target as HTMLInputElement).value))
+                    setEmailValid(validateEmail((e.target as HTMLInputElement).value))
                 }}
             />
 
@@ -165,7 +171,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 value={phone}
                 onInput={e => {
                     handleChange(setPhone, e)
-                    setNameValid(validatePhone((e.target as HTMLInputElement).value))
+                    setPhoneValid(validatePhone((e.target as HTMLInputElement).value))
                 }} />
 
 
@@ -199,7 +205,6 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 </RadioGroup>
             </FormControl >
             <div className="postblock-form-btn" >
-                {/* <TextField sx={{ display: "hidden" }}> */}
                 <Button
                     disableElevation
                     sx={{
@@ -207,11 +212,11 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                         borderTopRightRadius: 0,
                         borderBottomRightRadius: 0,
                         padding: "14px 15px",
+                        borderColor: imgValid == null || imgValid ? "black" : "red"
                     }}
                     variant="outlined"
                     component="label"
                     color="inherit"
-
                 >
                     Upload
                     <input
@@ -219,14 +224,15 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                         type="file"
                         onChange={handleFile}
                         accept="image/jpeg, image/jpg"
-
                     />
                 </Button>
-                {/* </TextField> */}
-                <div className="postblock-form-btn-label">
+
+                <div className="postblock-form-btn-label" style={{ borderColor: imgValid == null || imgValid ? "black" : "red" }}
+                >
                     <span>{typeof img === "string" ? "Upload your photo" : img.name}</span>
                 </div>
             </div>
+            <label style={{ color: imgValid == null || imgValid ? "black" : "red" }} htmlFor="file-btn">{imgValid == null || imgValid ? "It`s okey" : "File is not valid!"}</label>
             <CustomButton onClick={handleSubmit} marginTop="50px" disabled={!nameValid || !phoneValid || !emailValid || (typeof img === 'string')}>Sign in</CustomButton>
             <Snackbar
                 open={open}
