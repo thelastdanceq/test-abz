@@ -1,5 +1,6 @@
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react";
+import { validateEmail, validateName, validatePhone } from "../../func/validator";
 import { useAppDispatch } from "../../hooks/redux";
 import { userSlice } from "../../store/reducers/UsersSlice";
 import CustomButton from "../UI/CustomButton";
@@ -60,14 +61,26 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
 
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         if (e && e.target && e.target.files && e.target.files[0]) {
             const last = e.target.files[0].name.split('.')
+            let img = new Image()
+            img.src = window.URL.createObjectURL(e.target.files[0])
+            const fileSquareValid = (img.onload = () => {
+                return img.naturalHeight >= 70 && img.naturalWidth >= 70
+            })()
+            console.log(fileSquareValid);
+
 
             const fileTypeValid = last[last.length - 1] === "jpeg" || last[last.length - 1] === "jpg"
 
             const fileSizeValid = !(e.target.files[0].size > 5_000_000);
+            if (!fileSquareValid) alert('Size of picture is too small')
+            if (!fileTypeValid) alert('Type is not valid ')
+            if (!fileSizeValid) alert('Size of file is too big ')
 
-            if (fileTypeValid && fileSizeValid) {
+
+            if (fileTypeValid && fileSizeValid && fileSquareValid) {
                 setImg(e!.target!.files ? e.target.files[0] : "Upload your photo")
             } else {
                 alert("Your file is too big or type is not 'jpeg/jpg', choose another")
@@ -90,18 +103,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
 
 
     const [img, setImg] = useState<File | string>("Upload your photo")
-
-    useEffect(() => {
-        name.length >= 2 && name.length <= 60 ? setNameValid(true) : setNameValid(false)
-    }, [name])
-    useEffect(() => {
-        const pattern = /\+380([0-9]{9})$/
-        pattern.test(phone) ? setPhoneValid(true) : setPhoneValid(false)
-    }, [phone])
-    useEffect(() => {
-        const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        setEmailValid(pattern.test(email))
-    }, [email])
+    const [imgValid, setImgValid] = useState<boolean | null>(null)
 
 
     const handleChange = (setter: React.Dispatch<React.SetStateAction<string>>, event: (React.FormEvent<HTMLDivElement>)) => {
@@ -117,6 +119,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
             })
     }, [])
 
+
     return (
         <div className="postblock-form" style={{
             display: "flex",
@@ -127,36 +130,43 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 required
                 fullWidth
                 label={"Name"}
-                helperText={nameValid ? "It`s ok" : "Length of name should be > 2 and < 50!"}
-                error={!nameValid || false}
+                helperText={nameValid === null || nameValid ? "It`s ok" : "Length of name should be > 2 and < 60!"}
+                error={nameValid === null ? false : !nameValid}
                 value={name}
                 sx={{ marginTop: "50px" }}
-                onInput={e => handleChange(setName, e)}
+                onInput={e => {
+                    handleChange(setName, e)
+                    setNameValid(validateName((e.target as HTMLInputElement).value))
+                }}
             />
 
             <TextField
                 fullWidth
                 required
-                error={!emailValid || false}
+                error={emailValid === null ? false : !emailValid}
                 label={"Email"}
-                helperText={emailValid ? "It`s ok" : "Email is not valid"}
+                helperText={emailValid === null || emailValid ? "It`s ok" : "Email is not valid"}
                 value={email}
                 sx={{ marginTop: "50px" }}
-                onInput={e => handleChange(setEmail, e)}
-
+                onInput={e => {
+                    handleChange(setEmail, e)
+                    setNameValid(validateEmail((e.target as HTMLInputElement).value))
+                }}
             />
 
             <TextField
                 required
                 fullWidth
-                error={!phoneValid || false}
-                helperText={phoneValid ? "It`s ok" : "+38 (XXX) XXX - XX - XX"}
+                error={phoneValid === null ? false : !phoneValid}
+                helperText={phoneValid === null || phoneValid ? "It`s ok" : "+38 (XXX) XXX - XX - XX"}
                 label={"Phone"}
                 name="phone"
                 sx={{ marginTop: "50px" }}
                 value={phone}
-                onInput={e => handleChange(setPhone, e)}
-            />
+                onInput={e => {
+                    handleChange(setPhone, e)
+                    setNameValid(validatePhone((e.target as HTMLInputElement).value))
+                }} />
 
 
             <FormControl className="postblock-form-radio" sx={{
@@ -189,6 +199,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 </RadioGroup>
             </FormControl >
             <div className="postblock-form-btn" >
+                {/* <TextField sx={{ display: "hidden" }}> */}
                 <Button
                     disableElevation
                     sx={{
@@ -200,6 +211,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                     variant="outlined"
                     component="label"
                     color="inherit"
+
                 >
                     Upload
                     <input
@@ -210,6 +222,7 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
 
                     />
                 </Button>
+                {/* </TextField> */}
                 <div className="postblock-form-btn-label">
                     <span>{typeof img === "string" ? "Upload your photo" : img.name}</span>
                 </div>
