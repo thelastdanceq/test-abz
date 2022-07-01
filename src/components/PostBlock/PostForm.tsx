@@ -35,7 +35,9 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 }
             })
 
-            const data = await response.json()
+
+            const data = await response.json();
+
 
             if (data.success) {
                 await fetch('https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6')
@@ -52,11 +54,12 @@ const PostForm = ({ userRef }: { userRef: React.RefObject<HTMLInputElement> }) =
                 setImg('Upload your photo')
                 setValue(options[0].name)
 
+            } else {
+                throw new Error(data.message)
             }
         } catch (err) {
-            console.log(err);
+            alert((err as Error).message + "\nChange some fields")
         }
-
     }
 
 
